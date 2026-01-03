@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>医学信息系统 - 40个知识点卡片</title>
+    <style>
+        /* 定义方正粗黑简体字体 */
+        @font-face {
+            font-family: 'FZCuHei';
+            src: url('./操作系统/FZCuHei.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* 应用字体到所有元素 */
+        * {
+            font-family: 'FZCuHei', sans-serif;
+            font-weight: normal !important;
+        }
+
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'FZCuHei', sans-serif;
+            line-height: 1.6;
+            color: #000;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 50%, #fceffe 100%);
+            min-height: 100vh;
+            /* 番茄ToDo风格的背景纹理 */
+            background-image: radial-gradient(circle, rgba(102, 126, 234, 0.05) 2px, transparent 2px);
+            background-size: 30px 30px;
+            /* 番茄ToDo风格的过渡动画 */
+            transition: background-color 0.5s ease;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(118, 75, 162, 0.05) 0%, transparent 40%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 头部样式 */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+            border-radius: 0 0 25px 25px;
+            /* 番茄ToDo风格的柔和阴影和更大圆角 */
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* 搜索区域样式 */
+        .search-section {
+            background: white;
+            margin: 0 auto 2.5rem;
+            border-radius: 25px;
+            box-shadow: 0 10px 35px rgba(102, 126, 234, 0.15);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            width: 95%;
+            max-width: 1200px;
+            padding: 2.5rem;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .tool-buttons {
+            margin: 1.5rem 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .tool-buttons a {
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 12px 20px;
+            border-radius: 18px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            font-weight: 600;
+            display: inline-block;
+            margin: 5px;
+        }
+        
+        .tool-buttons a:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.45);
+        }
+        
+        .search-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 25px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            z-index: -1;
+        }
+        
+        .search-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 45px rgba(102, 126, 234, 0.25);
+        }
+
+        .search-section h2 {
+            color: #000;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .search-container input {
+            flex: 1;
+            padding: 1.1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            font-size: 1.15rem;
+            transition: all 0.3s ease;
+            min-width: 250px;
+            max-width: 500px;
+            background: #f8fafc;
+        }
+
+        .search-container input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15), 0 5px 15px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+        .search-container button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1.1rem 1.8rem;
+            border-radius: 18px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.05rem;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .search-container button:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.45);
+        }
+        
+        .search-container button:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        /* 知识卡片网格布局 - 每行一个 */
+        .cards-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-top: 2rem;
+            align-items: center;
+        }
+
+        /* 知识卡片样式 */
+        .card {
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.15);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            width: 100%;
+            max-width: 1000px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 25px;
+            padding: 2px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            z-index: -1;
+            transition: all 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.25);
+        }
+        
+        .card:hover::before {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.5), rgba(118, 75, 162, 0.5));
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.8rem;
+            font-size: 1.7rem;
+            font-weight: 600;
+            position: relative;
+            border-radius: 23px 23px 0 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+                
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+        }
+                
+        .card:hover .card-header {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: translateY(-2px);
+        }
+
+        .card-content {
+            padding: 2rem 2.2rem;
+            flex-grow: 1;
+            font-size: 1.35rem;
+            line-height: 1.9;
+            background: linear-gradient(0deg, rgba(245, 247, 250, 0.3) 0%, transparent 100%);
+        }
+        
+        .full-content {
+            display: block;
+        }
+
+        /* 重点内容标记 */
+        .highlight {
+            color: #ff3333;
+            font-weight: bold;
+        }
+
+        .highlight-red {
+            color: #ff3333;
+            font-weight: bold;
+        }
+        
+        /* 逻辑关系可视化 */
+        .causal {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .contrast {
+            color: #e67e22;
+            font-weight: bold;
+        }
+        
+        .composition {
+            color: #3498db;
+            font-weight: bold;
+        }
+        
+        .state {
+            color: #9b59b6;
+            font-weight: bold;
+        }
+        
+        /* 摘要和展开样式 */
+        .expand-btn {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .expand-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 底部样式 */
+        footer {
+            background: linear-gradient(135deg, #333 0%, #222 100%);
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+            border-radius: 25px 25px 0 0;
+            /* 番茄ToDo风格的柔和渐变和圆角 */
+            box-shadow: 0 -3px 15px rgba(0,0,0,0.1);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+                padding: 0 10px;
+            }
+
+            header h1 {
+                font-size: 2.2rem;
+            }
+
+            header p {
+                font-size: 1.2rem;
+            }
+
+            .card-header {
+                font-size: 1.5rem;
+                padding: 1.3rem;
+            }
+
+            .card-content {
+                font-size: 1.2rem;
+                padding: 1.5rem;
+            }
+
+            .search-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .search-container input {
+                width: 100%;
+                margin-bottom: 8px;
+                min-width: auto;
+            }
+
+            .search-container button {
+                width: 100%;
+            }
+            
+            .search-section {
+                padding: 2rem;
+            }
+            
+            /* 移动设备触摸滑动优化 */
+            .cards-grid {
+                scroll-snap-type: y mandatory;
+            }
+            
+            .card {
+                scroll-snap-align: start;
+            }
+            
+            .tool-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tool-buttons a {
+                width: 100%;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            header {
+                padding: 1.5rem 0;
+                border-radius: 0 0 15px 15px;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            header p {
+                font-size: 1.1rem;
+            }
+
+            .card-header {
+                font-size: 1.3rem;
+                padding: 1.1rem;
+            }
+
+            .card-content {
+                font-size: 1.1rem;
+                padding: 1.3rem;
+            }
+
+            .search-section {
+                padding: 1.5rem;
+            }
+            
+            .search-container input {
+                padding: 0.9rem;
+                font-size: 1.1rem;
+            }
+            
+            .search-container button {
+                padding: 0.9rem 1.5rem;
+                font-size: 0.95rem;
+            }
+            
+            .tool-buttons a {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+
+        /* 搜索结果样式 */
+        .search-results {
+            margin-top: 1rem;
+        }
+        
+        .search-result-item {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.03);
+            position: relative;
+        }
+        
+        .search-result-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+        
+        .search-result-title {
+            color: #000;
+            margin-bottom: 0.8rem;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        
+        .search-result-content {
+        }
+        
+        /* 隐藏功能 */
+        .hidden {
+            display: none;
+        }
+
+        /* 星标标记 */
+        .star-mark {
+            color: #ffcc00;
+            font-size: 1.4em;
+            margin-right: 8px;
+            text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
+            }
+            to {
+                text-shadow: 0 0 15px rgba(255, 204, 0, 0.8), 0 0 20px rgba(255, 204, 0, 0.6);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <header>
+        <h1>医学信息系统</h1>
+        <p>40个核心知识点卡片</p>
+    </header>
+
+    <div class="container">
+        <div class="search-section">
+            <h2>学习工具</h2>
+            <div class="search-container">
+                <input type="text" id="knowledgeSearch" placeholder="输入关键词搜索知识点...">
+                <button onclick="searchKnowledge()">搜索</button>
+            </div>
+            <div class="tool-buttons">
+                <a href="医学信息系统习题.html" style="color: white; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 12px 20px; border-radius: 18px; text-decoration: none; font-weight: 600; box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; letter-spacing: 0.8px; text-transform: uppercase; font-weight: 600; display: inline-block; margin: 10px;">进入习题练习</a>
+            </div>
+            <div id="searchResults" class="search-results"></div>
+        </div>
+
+        <div class="cards-grid" id="cardsContainer">
+            <!-- 知识卡片将通过JavaScript动态生成 -->
+        </div>
+    </div>
+
+    <footer>
+        <p>医学信息系统知识点复习卡片 - 使用方正粗黑简体字体</p>
+    </footer>
+
+    <button id="backToTop" class="back-to-top" title="回到顶部">↑</button>
+
+    <script>
+        // 40个知识点数据
+        const knowledgePoints = [
+            {
+                id: 1,
+                title: "医院的定义和功能",
+                content: "<strong>定义：</strong>医院是社会和医学系统中一个完整的组织。<br><br><strong>功能：</strong><br>• 为人们提供完善的健康服务（医疗和预防两个方面）<br>• 从门诊延伸到家庭的医疗服务<br>• 培训医务人员的中心<br>• 研究医学科学的中心"
+            },
+            {
+                id: 2,
+                title: "医院信息系统的定义",
+                content: "<strong>定义：</strong>医院信息系统是指利用计算机软硬件技术、网络通讯技术等现代化手段的信息系统。<br><br><strong>主要任务：</strong><br>• 对医院及其所属各部门的人流、物流、财流进行综合管理<br>• 在医疗活动各阶段中对数据进行：<br>&nbsp;&nbsp;- 采集、存储、处理<br>&nbsp;&nbsp;- 提取、传输、汇总<br>&nbsp;&nbsp;- 加工生成各种信息<br><br><strong>目标：</strong>为医院的整体运行提供全面的、自动化的管理及各种服务。"
+            },
+            {
+                id: 3,
+                title: "医院常见信息系统分类",
+                content: "<strong>临床系统：</strong>护理管理系统、电子病历系统、门诊医生工作站、住院医生工作站、检验、检查、手术麻醉、合理用药、专科随访<br><br><strong>经济管理系统：</strong>挂号收费、医保、财务<br><br><strong>运营管理系统：</strong>协同办公、人事、院感、信息上报、信息安全<br><br><strong>后勤管理系统：</strong>固定资产、物资耗材、运维保障、物流<br><br><strong>公众服务系统：</strong>门户网站、自助服务、微信、支付宝、院内导引、服务随访<br><br><strong>其它系统：</strong>科研管理、电子图书、电子病案、短信平台、集成平台"
+            },
+            {
+                id: 4,
+                title: "医院信息标准定义",
+                content: "<strong>定义：</strong>医院信息标准指在医疗事务处理过程中，信息采集、传输、交换和利用时所采用的统一的规则、概念、名词、术语、代码和技术。<br><br><strong>分类：</strong><br>• 信息表达标准<br>• 信息技术标准"
+            },
+            {
+                id: 5,
+                title: "信息标准化的作用",
+                content: "<strong>核心作用：</strong>保证多个独立信息系统之间信息的兼容性和互操作性（信息交换可靠、完全、精确）<br><br><strong>其他作用：</strong><br>• 保证用于统计目的的数据分类的可比性<br>• 减少重复研究和信息冗余<br>• 使医院信息处于规范、统一的标准管理之中<br>• 医院信息化工作得以顺利开展"
+            },
+            {
+                id: 6,
+                title: "常见医院信息标准",
+                content: "<strong>ICD：</strong>国际疾病分类<br><br><strong>SNOMED：</strong>人类与兽类医学系统术语<br><br><strong>HL7：</strong>（美国）卫生信息传输标准<br><br><strong>DICOM：</strong>医学数字化影像通信标准"
+            },
+            {
+                id: 7,
+                title: "HL7工作层次",
+                content: "<strong>工作层次：</strong>卫生信息传输标准HL7工作在OSI（Open System Interconnection，开放系统互连）的<strong>应用层</strong>。"
+            },
+            {
+                id: 8,
+                title: "国家卫生健康委智慧医院分级评价",
+                content: "<strong>三位一体：</strong>国家卫生健康委智慧医院分级评价\"三位一体\"包括：<br>• <strong>智慧医疗</strong>：电子病历系统功能应用<br>• <strong>智慧服务</strong>：提升患者就医体验<br>• <strong>智慧管理</strong>：优化医院管理流程<br><br>三个维度分别进行分级评估。"
+            },
+            {
+                id: 9,
+                title: "电子病历系统应用水平分级评价",
+                content: "<strong>目的：</strong>全面评估各医疗机构现阶段电子病历系统应用所达到的水平，建立适合我国国情的电子病历系统应用水平评估和持续改进体系。<br><br><strong>等级划分：</strong>分为<strong>0级至8级</strong>共九个等级。"
+            },
+            {
+                id: 10,
+                title: "医院智慧服务定义",
+                content: "<strong>定义：</strong>医院智慧服务是指医院针对患者的医疗服务需要，应用信息技术改善患者就医体验，加强患者信息互联共享，提升医疗服务智慧化水平的新时代服务模式。<br><br><strong>分级评价：</strong>医院智慧服务分级评价分为<strong>0级至5级</strong>共6个等级。"
+            },
+            {
+                id: 11,
+                title: "医院信息互联互通标准化成熟度测评",
+                content: "<strong>简称：</strong>互联互通<br><br><strong>目的：</strong><br>• 促进卫生健康信息标准的采纳、实施和应用<br>• 推进医疗卫生服务与管理系统的标准化建设<br>• 促进业务协同<br>• 为医疗卫生机构之间标准化互联互通和信息共享提供技术保障<br><br><strong>等级划分：</strong>分为一级、二级、三级、四级乙等、四级甲等、五级乙等、五级甲等共<strong>7个等级</strong>。"
+            },
+            {
+                id: 12,
+                title: "ESB架构",
+                content: "<strong>定义：</strong>医院信息系统互联互通通常会采用一个ESB架构的集成平台来接入各个信息系统，负责系统之间的信息交互。<br><br><strong>全称：</strong>ESB（Enterprise Service Bus）中文名称是<strong>企业服务总线</strong>。<br><br><strong>关联技术：</strong>为了确保医院不同信息系统之间时钟的一致性，一般会采用网络时间协议（NTP）来进行时间同步。"
+            },
+            {
+                id: 13,
+                title: "时间同步",
+                content: "<strong>目的：</strong>确保医院不同信息系统之间时钟的一致性<br><br><strong>技术：</strong>采用网络时间协议（NTP）来进行时间同步"
+            },
+            {
+                id: 14,
+                title: "HIS系统定义",
+                content: "<strong>定义：</strong>HIS是指在医院信息系统中实现对医院人流、物流、财流的综合管理的系统。<br><br><strong>功能划分：</strong>根据国家卫健委制定的HIS功能规范，将整个医院信息系统划分为五个部分：<br>• 临床诊疗部分<br>• 药品管理部分<br>• 经济管理部分<br>• 综合管理与统计分析部分<br>• 外部接口部分"
+            },
+            {
+                id: 15,
+                title: "药品管理系统",
+                content: "<strong>主要功能：</strong>对药库、制剂、门诊药房、住院药房、药品价格、药品会计核算等信息的管理以及辅助临床合理用药<br><br><strong>合理用药辅助功能：</strong><br>• 处方或医嘱的合理用药审查<br>• 药物信息咨询<br>• 用药咨询等<br><br><strong>重要关系：</strong>在药品结构的层级关系中，药品产地确定了药品的零售价<br><br><strong>药品字典：</strong>医院所使用的所有药品品种的目录信息的总称，也是医院信息系统中所有有关药品信息的一个索引，是药品信息的一个入口<br><br><strong>药品盘存目的：</strong>为了帐物相符"
+            },
+            {
+                id: 16,
+                title: "住院入、出、转管理系统",
+                content: "<strong>主要功能模块：</strong>管理患者的<br>• 入院<br>• 出院<br>• 转院"
+            },
+            {
+                id: 17,
+                title: "住院医生工作站",
+                content: "<strong>定义：</strong>住院医生工作站是协助医生完成病房日常医疗工作的计算机应用程序。<br><br><strong>主要功能：</strong>协助进行<br>• 诊断<br>• 医嘱<br>• 检查<br>• 检验<br>• 治疗<br>• 手术<br>• 会诊<br>• 转科<br>• 出院等诊疗活动"
+            },
+            {
+                id: 18,
+                title: "医嘱定义和分类",
+                content: "<strong>定义：</strong>医嘱是指医师在医疗活动中下达的医学指令。<br><br><strong>分类：</strong>主要分为<br>• 长期医嘱<br>• 临时医嘱<br><br><strong>流程：</strong>医嘱由<strong>医生开立</strong>，由<strong>护士负责核对</strong><br><br><strong>计价模式：</strong>分散计价"
+            },
+            {
+                id: 19,
+                title: "临床信息系统(CIS)",
+                content: "<strong>定义：</strong>临床信息系统(Clinical Information System,CIS)是医院信息系统的组成部分，对在医疗活动各阶段产生的数据进行采集、存储、处理、提取、传输、汇总并加工生成各种信息。<br><br><strong>主要系统包括：</strong><br>• 电子病历系统（EMR）<br>• 医生站系统<br>• 护理信息系统（NIS）<br>• 护士工作站系统<br>• 实验室信息系统（LIS）<br>• 医学图像存储传输系统（PACS）<br>• 放射信息系统（RIS）<br>• 手术麻醉管理系统<br>• 重症监护管理系统<br>• 临床决策支持系统（CDSS）等"
+            },
+            {
+                id: 20,
+                title: "电子病历(EMR)",
+                content: "<strong>定义：</strong>电子病历（Electronic Medical Record,EMR）是由医疗机构以电子化方式创建、保存和使用的、重点针对门诊、住院患者（或保健对象）临床诊疗和指导干预信息的数据集成系统。<br><br><strong>作用：</strong><br>• 是居民个人在医疗机构历次就诊过程中产生和被记录的完整、详细的临床信息资源<br>• 是记录医疗诊治对象医疗服务活动记录的信息资源库"
+            },
+            {
+                id: 21,
+                title: "中医电子病历",
+                content: "<strong>定义：</strong>中医电子病历是包括以下具有中医药诊疗特色的医疗记录：<br>• 中医临床四诊<br>• 辨证论治<br>• 中医处方<br>• 中医诊断<br>• 中医医嘱<br>• 针灸<br>• 推拿等"
+            },
+            {
+                id: 22,
+                title: "临床数据存储库(CDR)",
+                content: "<strong>全称：</strong>临床数据存储库CDR（Clinical Data Repository）<br><br><strong>别名：</strong>临床数据中心<br><br><strong>功能：</strong>各种来源的电子病历数据的统一管理和服务<br><br><strong>特点：</strong><br>• 经过集成的、具有统一的数据模型<br>• 能统一提供对外数据访问的数据存储<br><br><strong>作用：</strong>用于整合各种临床信息数据并为医疗、管理、科研等活动提供数据支持<br><br><strong>应用：</strong>全流程患者360视图查看的数据即来源于CDR"
+            },
+            {
+                id: 23,
+                title: "护理信息系统(NIS)",
+                content: "<strong>生命体征管理：</strong>对住院患者的体温、呼吸、脉博、血压等指标进行持续的采集和监测<br><br><strong>作用：</strong><br>• 提高医护质量<br>• 预防医疗差错<br>• 提高护理效率和管理水平<br>• 减轻护士的劳动强度<br><br><strong>效果：</strong>移动护理信息系统的使用，对以上各方面都起了十分积极的促进作用"
+            },
+            {
+                id: 24,
+                title: "实验室信息管理系统(LIS)",
+                content: "<strong>定义：</strong>对患者样本识别、检验申请、结果报告、质量控制以及样本分析各方面相关的数据进行管理的信息系统。<br><br><strong>主要任务：</strong><br>• 协助检验师对检验申请单及标本进行处理<br>• 检验数据的自动采集或直接录入<br>• 检验数据处理<br>• 检验报告的审核<br>• 检验报告的查询、打印等"
+            },
+            {
+                id: 25,
+                title: "LIS系统交互",
+                content: "<strong>系统交互：</strong>LIS系统需要与HIS、CIS等系统进行交互<br><br><strong>设备联机：</strong>需要与各种自动化分析设备联机<br><br><strong>目的：</strong>以获取相关的信息"
+            },
+            {
+                id: 26,
+                title: "影像归档和通信系统(PACS)",
+                content: "<strong>全称：</strong>影像归档和通信系统PACS（picture archiving and communication system）<br><br><strong>应用：</strong>应用在医院影像科室的系统<br><br><strong>主要任务：</strong><br>• 把日常产生的各种医学影像（包括核磁、CT、超声、X光机、红外仪、显微仪等设备产生的图像）<br>• 通过各种接口（模拟、DICOM、网络）以数字化的方式海量保存<br>• 在一定的授权下能够很快的调回使用<br>• 增加一些辅助诊断管理功能<br><br><strong>作用：</strong>在各种影像设备间传输数据和组织存储数据具有重要作用。"
+            },
+            {
+                id: 27,
+                title: "PACS系统解决的问题",
+                content: "<strong>解决的问题：</strong>PACS系统主要解决5个方面的问题：<br>• 医学影像采集和数字化<br>• 图像存储和管理<br>• 医学影像高速传输<br>• 数字化图像的重现<br>• 图像信息与其他信息的集成"
+            },
+            {
+                id: 28,
+                title: "PACS存储方式",
+                content: "<strong>数据特点：</strong>PCAS系统每天都要产生大量信息和海量数据<br><br><strong>存储方式：</strong>可分为<br>• 在线存储<br>• 离线存储<br>两种"
+            },
+            {
+                id: 29,
+                title: "放射科信息管理系统(RIS)",
+                content: "<strong>全称：</strong>放射科信息管理系统RIS（Radiology Information System）<br><br><strong>功能：</strong>放射科的<br>• 登记<br>• 分诊<br>• 影像诊断报告<br>• 各项信息查询、统计等工作的管理系统<br><br><strong>关联：</strong>RIS系统与PACS系统紧密相连，构成医院数字医疗设备、影像及报告管理的解决方案<br><br><strong>重要性：</strong>RIS系统对提升放射科高效工作流程至关重要。"
+            },
+            {
+                id: 30,
+                title: "医院面向患者服务的信息系统安全等级",
+                content: "<strong>涉及数据：</strong>患者的个人信息、医疗数据<br><br><strong>安全等级：</strong>信息安全等级保护应达到<strong>三级</strong>"
+            },
+            {
+                id: 31,
+                title: "信息系统故障应对措施",
+                content: "<strong>目的：</strong>应对医院信息系统故障或瘫痪<br><br><strong>措施：</strong><br>• 建立容灾备份机制（或冗余配置等）<br>• 备份数据库<br>• 定期进行数据恢复验证<br>• 开展应急演练等措施"
+            },
+            {
+                id: 32,
+                title: "远程医疗系统组成",
+                content: "<strong>组成部分：</strong>远程医疗系统通常由三部分组成：<br>• 医疗服务的提供者<br>• 寻求医疗服务的需求方<br>• 联系两者的通信网络、视频会议系统及诊疗装置等"
+            },
+            {
+                id: 33,
+                title: "急诊预检分诊系统",
+                content: "<strong>分诊原则：</strong>一般按照<strong>三区四级分诊原则</strong>对急诊患者进行分诊。"
+            },
+            {
+                id: 34,
+                title: "区域卫生信息平台",
+                content: "<strong>定义：</strong>连接区域内的医疗卫生机构基本业务信息系统的数据交换和共享平台。"
+            },
+            {
+                id: 35,
+                title: "公共卫生信息系统",
+                content: "<strong>组成部分：</strong>公共卫生信息系统包括四个方面：<br>• 突发公共卫生事件应急指挥决策机制（指挥决策）<br>• 疾病预防控制体系（疾病监测）<br>• 医疗救治体系（医疗救治）<br>• 卫生执法监督体系（公共卫生监测）<br><br><strong>核心机构：</strong>疾病预防控制中心（简称CDC）<br><br><strong>核心系统：</strong>中国疾病预防控制信息系统，是公共卫生信息系统的重要组成部分。"
+            },
+            {
+                id: 36,
+                title: "云计算服务模式",
+                content: "<strong>服务层次：</strong>云计算提供三个层次的服务模式：<br><br>（1）<strong>IaaS（基础设施即服务）：</strong>提供硬件基础设施部署服务，包括实体或虚拟的计算、存储和网络等资源<br><br>（2）<strong>PaaS（平台即服务）：</strong>提供云计算应用程序的运行环境，提供应用程序部署与管理服务<br><br>（3）<strong>SaaS（软件即服务）：</strong>提供基于云计算基础平台所开发的应用程序"
+            },
+            {
+                id: 37,
+                title: "区块链技术",
+                content: "<strong>定义：</strong>区块链（blockchain）是一种块链式存储、不可篡改、安全可信的去中心化分布式账本<br><br><strong>技术组成：</strong>结合了分布式存储、点对点传输、共识机制、密码学等技术<br><br><strong>工作方式：</strong>通过不断增长的数据块链（Blocks）记录交易和信息，确保数据的安全和透明性<br><br><strong>核心特征：</strong>去中心化是区块链最突出最本质的特征。"
+            },
+            {
+                id: 38,
+                title: "大数据特征",
+                content: "<strong>定义：</strong>大数据是一种规模大到在获取、存储、管理、分析方面大大超出了传统数据库软件工具能力范围的数据集合<br><br><strong>四大特征：</strong><br>• 海量的数据规模（Volume）<br>• 快速的数据流转（Velocity）<br>• 多样的数据类型（Variety）<br>• 价值密度低（Value）"
+            },
+            {
+                id: 39,
+                title: "人工智能定义",
+                content: "<strong>全称：</strong>人工智能（Artificial Intelligence，AI）<br><br><strong>定义：</strong>研究、开发用于模拟、延伸和扩展人的智能的理论、方法、技术及应用系统的一门新技术科学<br><br><strong>学科归属：</strong>计算机科学的一个分支<br><br><strong>目标：</strong>了解智能的实质，并生产出一种新的能以人类智能相似的方式做出反应的智能机器<br><br><strong>研究领域：</strong>包括机器人、语言识别、图像识别、自然语言处理和专家系统等。"
+            },
+            {
+                id: 40,
+                title: "生物信息学",
+                content: "<strong>定义：</strong>生物信息学（Bioinformatics）是20世纪800年代末随着人类基因组计划的启动而兴起的一门新的交叉学科<br><br><strong>研究方法：</strong>用数理和信息科学的理论技术和方法去研究生命现象、组织和分析指数增长的生物数据<br><br><strong>关联项目：</strong>人类基因组计划（Human Genome Project, HGP）<br><br><strong>项目宗旨：</strong>测定组成人类染色体（指单倍体）中所包含的30亿个碱基对组成的核苷酸序列，从而绘制人类基因组图谱，并且辨识其载有的基因及其序列，达到破译人类遗传信息的最终目的。"
+            },
+        ];
+
+        // 生成知识卡片
+        function generateCards() {
+            const container = document.getElementById('cardsContainer');
+            container.innerHTML = '';
+
+            knowledgePoints.forEach(point => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                // 高亮标记关键词汇
+                let processedContent = point.content
+                    .replace(/(因此|所以|由于|因为|从而|导致|结果|影响)/g, '<span class="causal">$1</span>')
+                    .replace(/(对比|相对|相反|不同|然而|但是|尽管|虽然|然而|反之)/g, '<span class="contrast">$1</span>')
+                    .replace(/(包括|组成|构成|由.*组成|由.*构成|组成部分)/g, '<span class="composition">$1</span>')
+                    .replace(/(状态|转换|变化|转变|转为|变为|转换为|发展为)/g, '<span class="state">$1</span>')
+                    .replace(/(医院信息系统|HIS|电子病历系统|EMR|护理信息系统|NIS|实验室信息系统|LIS|医学图像存储传输系统|PACS|放射信息系统|RIS|临床信息系统|CIS|企业服务总线|ESB|网络时间协议|NTP|ICD|SNOMED|HL7|DICOM|智慧医疗|智慧服务|智慧管理|三级|0级至8级|0级至5级|一级|二级|三级|四级乙等|四级甲等|五级乙等|五级甲等|临床诊疗部分|药品管理部分|经济管理部分|综合管理与统计分析部分|外部接口部分|长期医嘱|临时医嘱|分散计价|医生开立|护士核对|三区四级分诊|区域卫生信息平台|公共卫生信息系统|疾病预防控制中心|CDC|中国疾病预防控制信息系统|IaaS|PaaS|SaaS|去中心化|四大特征|Volume|Velocity|Variety|Value|人工智能|AI|生物信息学|人类基因组计划|HGP|医院|信息系统|定义|功能|主要任务|目标|作用|特点|分类|系统|标准|协议|应用|流程|管理|数据|信息|服务|医疗|患者|诊疗|护理|检验|检查|门诊|住院|电子病历|医嘱|计价|模块|层级|结构|关系|审查|咨询|干预|信息资源|临床|决策|支持|系统|应用|水平|分级|评价|等级|成熟度|测评|互联|互通|共享|业务|流程|优化|改进|模式|架构|集成|平台|交互|传输|交换|存储|安全|备份|容灾|恢复|应急|演练|远程|医疗|网络|通信|视频|会议|装置|提供者|需求方|急诊|预检|分诊|原则|区域|卫生|机构|基本|业务|数据|交换|共享|突发|公共卫生|事件|应急|指挥|决策|机制|疾病|预防|控制|体系|监测|救治|体系|执法|监督|体系|核心|机构|系统|云计算|服务|模式|基础设施|平台|软件|应用|程序|运行|环境|部署|管理|区块链|块链式|存储|不可|篡改|安全|可信|分布式|账本|点对点|传输|共识|机制|密码学|技术|数据块链|交易|信息|透明性|大数据|海量|规模|快速|流转|多样|类型|价值|密度|低|数理|科学|方法|生命|现象|组织|分析|指数|增长|生物|数据|人类|基因组|计划|宗旨|测定|染色体|碱基|对|核苷酸|序列|绘制|图谱|载有|最终|目的|破译|遗传|信息)/g, '<span class="highlight-red">$1</span>');
+                
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span class="star-mark">★</span>第${point.id}个知识点 - ${point.title}
+                    </div>
+                    <div class="card-content">
+                        <div class="full-content">${processedContent}</div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // 搜索功能
+        function searchKnowledge() {
+            const searchTerm = document.getElementById('knowledgeSearch').value.trim().toLowerCase();
+            const searchResults = document.getElementById('searchResults');
+            const cardsContainer = document.getElementById('cardsContainer');
+            
+            if (!searchTerm) {
+                // 如果没有搜索词，显示所有卡片
+                cardsContainer.classList.remove('hidden');
+                searchResults.innerHTML = '';
+                generateCards();
+                return;
+            }
+            
+            // 过滤知识点
+            const results = knowledgePoints.filter(point => {
+                return point.title.toLowerCase().includes(searchTerm) || 
+                       point.content.toLowerCase().includes(searchTerm);
+            });
+            
+            if (results.length > 0) {
+                // 隐藏主卡片容器，显示搜索结果
+                cardsContainer.classList.add('hidden');
+                searchResults.innerHTML = `<p>找到 ${results.length} 个相关知识点：</p>`;
+                
+                results.forEach(point => {
+                    // 高亮标记关键词汇
+                    let processedContent = point.content
+                        .replace(/(因此|所以|由于|因为|从而|导致|结果|影响)/g, '<span class="causal">$1</span>')
+                        .replace(/(对比|相对|相反|不同|然而|但是|尽管|虽然|然而|反之)/g, '<span class="contrast">$1</span>')
+                        .replace(/(包括|组成|构成|由.*组成|由.*构成|组成部分)/g, '<span class="composition">$1</span>')
+                        .replace(/(状态|转换|变化|转变|转为|变为|转换为|发展为)/g, '<span class="state">$1</span>')
+                        .replace(/(医院信息系统|HIS|电子病历系统|EMR|护理信息系统|NIS|实验室信息系统|LIS|医学图像存储传输系统|PACS|放射信息系统|RIS|临床信息系统|CIS|企业服务总线|ESB|网络时间协议|NTP|ICD|SNOMED|HL7|DICOM|智慧医疗|智慧服务|智慧管理|三级|0级至8级|0级至5级|一级|二级|三级|四级乙等|四级甲等|五级乙等|五级甲等|临床诊疗部分|药品管理部分|经济管理部分|综合管理与统计分析部分|外部接口部分|长期医嘱|临时医嘱|分散计价|医生开立|护士核对|三区四级分诊|区域卫生信息平台|公共卫生信息系统|疾病预防控制中心|CDC|中国疾病预防控制信息系统|IaaS|PaaS|SaaS|去中心化|四大特征|Volume|Velocity|Variety|Value|人工智能|AI|生物信息学|人类基因组计划|HGP|医院|信息系统|定义|功能|主要任务|目标|作用|特点|分类|系统|标准|协议|应用|流程|管理|数据|信息|服务|医疗|患者|诊疗|护理|检验|检查|门诊|住院|电子病历|医嘱|计价|模块|层级|结构|关系|审查|咨询|干预|信息资源|临床|决策|支持|系统|应用|水平|分级|评价|等级|成熟度|测评|互联|互通|共享|业务|流程|优化|改进|模式|架构|集成|平台|交互|传输|交换|存储|安全|备份|容灾|恢复|应急|演练|远程|医疗|网络|通信|视频|会议|装置|提供者|需求方|急诊|预检|分诊|原则|区域|卫生|机构|基本|业务|数据|交换|共享|突发|公共卫生|事件|应急|指挥|决策|机制|疾病|预防|控制|体系|监测|救治|体系|执法|监督|体系|核心|机构|系统|云计算|服务|模式|基础设施|平台|软件|应用|程序|运行|环境|部署|管理|区块链|块链式|存储|不可|篡改|安全|可信|分布式|账本|点对点|传输|共识|机制|密码学|技术|数据块链|交易|信息|透明性|大数据|海量|规模|快速|流转|多样|类型|价值|密度|低|数理|科学|方法|生命|现象|组织|分析|指数|增长|生物|数据|人类|基因组|计划|宗旨|测定|染色体|碱基|对|核苷酸|序列|绘制|图谱|载有|最终|目的|破译|遗传|信息)/g, '<span class="highlight-red">$1</span>');
+                    
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'search-result-item';
+                    resultItem.innerHTML = `
+                        <div class="search-result-title">第${point.id}个知识点 - ${point.title}</div>
+                        <div class="search-result-content">
+                            <div class="full-content">${processedContent}</div>
+                        </div>
+                    `;
+                    
+                    searchResults.appendChild(resultItem);
+                });
+            } else {
+                cardsContainer.classList.add('hidden');
+                searchResults.innerHTML = '<p>未找到相关知识点，请尝试其他关键字</p>';
+            }
+        }
+
+        // 回到顶部按钮功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const backToTopButton = document.getElementById('backToTop');
+            
+            if (backToTopButton) {
+                backToTopButton.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+            
+            // 监听滚动事件，控制回到顶部按钮显示
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add('show');
+                } else {
+                    backToTopButton.classList.remove('show');
+                }
+            });
+            
+            // 初始化卡片
+            generateCards();
+            
+            // 为搜索框添加回车键监听
+            const searchInput = document.getElementById('knowledgeSearch');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        searchKnowledge();
+                    }
+                });
+            }
+        });
+
+        // 页面加载完成后确保导航状态正确
+        window.addEventListener('load', function() {
+            // 添加页面加载动画
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(30px)';
+                    card.style.transition = 'opacity 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                }, index * 100);
+            });
+            
+            // 初始化滚轮控制
+            initWheelControl();
+            
+            // 初始化触摸控制
+            initTouchControl();
+        });
+        
+        // 触摸滑动控制卡片切换功能
+        function initTouchControl() {
+            let touchStartY = 0;
+            let touchEndY = 0;
+            const cards = document.querySelectorAll('.card');
+            let currentIndex = 0;
+            
+            // 检测触摸开始
+            document.addEventListener('touchstart', function(event) {
+                touchStartY = event.changedTouches[0].screenY;
+            }, { passive: true });
+            
+            // 检测触摸结束
+            document.addEventListener('touchend', function(event) {
+                touchEndY = event.changedTouches[0].screenY;
+                handleSwipe();
+            }, { passive: true });
+            
+            function handleSwipe() {
+                const swipeThreshold = 50; // 滑动阈值
+                const deltaY = touchStartY - touchEndY;
+                
+                if (Math.abs(deltaY) > swipeThreshold) {
+                    if (deltaY > 0) {
+                        // 向上滑动 - 下一张
+                        currentIndex = (currentIndex + 1) % cards.length;
+                    } else {
+                        // 向下滑动 - 上一张
+                        currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+                    }
+                    
+                    // 滚动到对应卡片
+                    cards[currentIndex].scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+            }
+        }
+        
+        // 滚轮控制卡片切换功能
+        function initWheelControl() {
+            let isScrolling = false;
+            let currentIndex = 0;
+            const cards = document.querySelectorAll('.card');
+            
+            window.addEventListener('wheel', function(e) {
+                if (isScrolling) return;
+                
+                isScrolling = true;
+                
+                if (e.deltaY > 0) {
+                    // 向下滚动
+                    currentIndex = (currentIndex + 1) % cards.length;
+                } else {
+                    // 向上滚动
+                    currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+                }
+                
+                // 滚动到对应卡片
+                cards[currentIndex].scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                
+                // 防止快速滚动
+                setTimeout(() => {
+                    isScrolling = false;
+                }, 500);
+            });
+            
+            // 初始化第一个卡片居中显示
+            if (cards.length > 0) {
+                cards[0].scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }
+        }
+    </script>
+</body>
+</html>
