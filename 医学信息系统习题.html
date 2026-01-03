@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>医学信息系统习题</title>
+    <style>
+        /* 定义方正粗黑简体字体 */
+        @font-face {
+            font-family: 'FZCuHei';
+            src: url('./FZCuHei.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* 应用字体到所有元素 */
+        * {
+            font-family: 'FZCuHei', sans-serif;
+            font-weight: normal !important;
+        }
+        
+        body {
+            font-family: 'FZCuHei', sans-serif;
+            line-height: 1.6;
+            color: #000;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 50%, #fceffe 100%);
+            min-height: 100vh;
+            background-image: radial-gradient(circle, rgba(102, 126, 234, 0.05) 2px, transparent 2px);
+            background-size: 30px 30px;
+            transition: background-color 0.5s ease;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            font-weight: normal;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(118, 75, 162, 0.05) 0%, transparent 40%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            border-radius: 25px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+        }
+
+        .question-section {
+            background: white;
+            margin: 0 auto 2.5rem;
+            border-radius: 25px;
+            box-shadow: 0 10px 35px rgba(102, 126, 234, 0.15);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            width: 95%;
+            max-width: 1200px;
+            padding: 2.5rem;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .question-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 25px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            z-index: -1;
+        }
+        
+        .question-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 45px rgba(102, 126, 234, 0.25);
+        }
+        
+        .question-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 25px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            z-index: -1;
+        }
+        
+        .question-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 45px rgba(102, 126, 234, 0.25);
+        }
+
+        .question-section h2 {
+            color: #000;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .question-item {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            text-align: left;
+        }
+
+        .question-content {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            line-height: 1.6;
+        }
+
+        .options {
+            margin: 1rem 0;
+        }
+
+        .option {
+            padding: 0.5rem 0;
+            font-size: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .answer-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #e6f7ff;
+            border-radius: 10px;
+            border-left: 4px solid #1890ff;
+            display: none;
+            font-weight: normal;
+            color: #000;
+            font-size: 1.2rem;
+        }
+
+        .explanation {
+            margin-top: 0.5rem;
+            padding: 0.8rem;
+            background: #f0f9ff;
+            border-radius: 8px;
+            border-left: 3px solid #52c41a;
+            display: none;
+            font-weight: normal;
+            color: #000;
+            font-size: 1.2rem;
+        }
+
+        .question-number {
+            font-weight: normal;
+            color: #667eea;
+            margin-right: 0.5rem;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-decoration: none;
+            z-index: 1000;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .question-section {
+                padding: 1.8rem;
+                margin: 0 auto 1.8rem;
+            }
+
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            header p {
+                font-size: 1.1rem;
+            }
+
+            .question-item {
+                padding: 1.2rem;
+            }
+
+            .question-content {
+                font-size: 1.2rem;
+            }
+
+            .option {
+                font-size: 1.1rem;
+            }
+            
+            .answer-btn {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            
+            .back-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            header {
+                padding: 1.5rem 0;
+                border-radius: 0 0 15px 15px;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            header p {
+                font-size: 1rem;
+            }
+
+            .question-section {
+                padding: 1.2rem;
+                margin: 0 auto 1.2rem;
+            }
+            
+            .question-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .question-item {
+                padding: 0.8rem;
+            }
+
+            .question-content {
+                font-size: 1.1rem;
+            }
+            
+            .option {
+                font-size: 1rem;
+            }
+            
+            .answer {
+                font-size: 1.1rem;
+                padding: 0.8rem;
+            }
+            
+            .explanation {
+                font-size: 1.1rem;
+                padding: 0.6rem;
+            }
+            
+            .answer-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            header {
+                padding: 1.5rem 0;
+                border-radius: 0 0 15px 15px;
+            }
+
+            header h1 {
+                font-size: 1.6rem;
+            }
+
+            header p {
+                font-size: 1rem;
+            }
+
+            .question-section {
+                padding: 1rem;
+            }
+
+            .question-item {
+                padding: 0.8rem;
+            }
+
+            .question-content {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="医学信息系统知识点卡片.html" class="back-btn">返回知识点卡片</a>
+    
+    <div class="container">
+        <header>
+            <h1>医学信息系统习题</h1>
+            <p>选择题 • 填空题 • 简答题 • 分析题</p>
+        </header>
+
+        <!-- 选择题部分 -->
+        <div class="question-section">
+            <h2>一、选择题（20题，每题2分，共40分）</h2>
+            <div id="multiple-choice-questions">
+                <!-- 选择题将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <!-- 填空题部分 -->
+        <div class="question-section">
+            <h2>二、填空题（10题，每题2分，共20分）</h2>
+            <div id="fill-blank-questions">
+                <!-- 填空题将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <!-- 简答题部分 -->
+        <div class="question-section">
+            <h2>三、简答题（5题，每题6分，共30分）</h2>
+            <div id="short-answer-questions">
+                <!-- 简答题将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <!-- 分析题部分 -->
+        <div class="question-section">
+            <h2>四、分析题（3题，每题10分，共30分）</h2>
+            <div id="analysis-questions">
+                <!-- 分析题将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 选择题数据（带解析）
+        const multipleChoiceQuestions = [
+            {
+                id: 1,
+                question: "医院信息系统的英文缩写是？",
+                options: ["A. CIS", "B. HIS", "C. EMR", "D. LIS"],
+                answer: "B. HIS",
+                explanation: "医院信息系统（Hospital Information System）是医院信息化的核心系统，用于管理医院的人流、物流、财流等综合信息。"
+            },
+            {
+                id: 2,
+                question: "电子病历系统的英文缩写是？",
+                options: ["A. HIS", "B. CIS", "C. EMR", "D. LIS"],
+                answer: "C. EMR",
+                explanation: "电子病历系统（Electronic Medical Record）是记录患者医疗信息的重要系统，是临床信息系统的重要组成部分。"
+            },
+            {
+                id: 3,
+                question: "医学图像存储传输系统的英文缩写是？",
+                options: ["A. LIS", "B. RIS", "C. PACS", "D. NIS"],
+                answer: "C. PACS",
+                explanation: "PACS（Picture Archiving and Communication System）是用于医学图像的存储、传输和管理的系统，主要服务于影像科室。"
+            },
+            {
+                id: 4,
+                question: "实验室信息管理系统的英文缩写是？",
+                options: ["A. RIS", "B. LIS", "C. NIS", "D. CIS"],
+                answer: "B. LIS",
+                explanation: "LIS（Laboratory Information System）用于管理患者样本、检验申请、结果报告等实验室相关信息。"
+            },
+            {
+                id: 5,
+                question: "放射信息系统通常与哪个系统紧密相连？",
+                options: ["A. EMR", "B. PACS", "C. HIS", "D. NIS"],
+                answer: "B. PACS",
+                explanation: "RIS（Radiology Information System）与PACS（Picture Archiving and Communication System）紧密相连，构成医院影像管理解决方案。"
+            },
+            {
+                id: 6,
+                question: "医院信息系统的功能不包括以下哪项？",
+                options: ["A. 人流管理", "B. 物流管理", "C. 财流管理", "D. 交通管理"],
+                answer: "D. 交通管理",
+                explanation: "医院信息系统主要功能包括人流、物流、财流管理，不涉及交通管理，交通管理不属于医院内部业务范畴。"
+            },
+            {
+                id: 7,
+                question: "HIS功能规范将医院信息系统划分为几个部分？",
+                options: ["A. 三个", "B. 四个", "C. 五个", "D. 六个"],
+                answer: "C. 五个",
+                explanation: "根据国家卫健委制定的HIS功能规范，医院信息系统划分为临床诊疗部分、药品管理部分、经济管理部分、综合管理与统计分析部分、外部接口部分等五个部分。"
+            },
+            {
+                id: 8,
+                question: "电子病历系统应用水平分级评价分为几个等级？",
+                options: ["A. 7个", "B. 8个", "C. 9个", "D. 10个"],
+                answer: "C. 9个",
+                explanation: "电子病历系统应用水平分级评价从0级至8级，共九个等级，用于评估医疗机构电子病历系统应用水平。"
+            },
+            {
+                id: 9,
+                question: "医院智慧服务分级评价分为几个等级？",
+                options: ["A. 5个", "B. 6个", "C. 7个", "D. 8个"],
+                answer: "B. 6个",
+                explanation: "医院智慧服务分级评价分为0级至5级，共6个等级，用于评估医院面向患者的智慧服务水平。"
+            },
+            {
+                id: 10,
+                question: "医院信息互联互通标准化成熟度测评最高等级是？",
+                options: ["A. 五级甲等", "B. 五级乙等", "C. 四级甲等", "D. 四级乙等"],
+                answer: "A. 五级甲等",
+                explanation: "医院信息互联互通标准化成熟度测评从一级到五级甲等，最高等级为五级甲等。"
+            },
+            {
+                id: 11,
+                question: "医嘱主要分为哪两类？",
+                options: ["A. 长期医嘱和临时医嘱", "B. 住院医嘱和门诊医嘱", "C. 药物医嘱和检查医嘱", "D. 治疗医嘱和护理医嘱"],
+                answer: "A. 长期医嘱和临时医嘱",
+                explanation: "医嘱主要分为长期医嘱（执行时间超过24小时）和临时医嘱（执行时间在24小时内或限定时间内）。"
+            },
+            {
+                id: 12,
+                question: "医嘱由谁开立，由谁核对？",
+                options: ["A. 护士开立，医生核对", "B. 医生开立，护士核对", "C. 医生开立，药师核对", "D. 护士开立，药师核对"],
+                answer: "B. 医生开立，护士核对",
+                explanation: "医嘱由医生开立，护士负责核对，这是医院医疗流程中的基本分工。"
+            },
+            {
+                id: 13,
+                question: "临床信息系统不包括以下哪个系统？",
+                options: ["A. 电子病历系统", "B. 医生工作站系统", "C. 护理信息系统", "D. 财务管理系统"],
+                answer: "D. 财务管理系统",
+                explanation: "临床信息系统主要包含与临床诊疗相关的系统，财务管理系统属于经济管理部分，不属于临床信息系统。"
+            },
+            {
+                id: 14,
+                question: "临床数据存储库的英文缩写是？",
+                options: ["A. CDR", "B. CIS", "C. EMR", "D. HIS"],
+                answer: "A. CDR",
+                explanation: "CDR（Clinical Data Repository）是临床数据中心，用于整合各种临床信息数据。"
+            },
+            {
+                id: 15,
+                question: "护理信息系统通常用于管理患者的哪项指标？",
+                options: ["A. 体温、呼吸、脉搏、血压", "B. 血糖、血脂、血常规", "C. 心电图、脑电图、肌电图", "D. 尿常规、便常规、生化指标"],
+                answer: "A. 体温、呼吸、脉搏、血压",
+                explanation: "护理信息系统主要用于管理患者的生命体征指标，如体温、呼吸、脉搏、血压等。"
+            },
+            {
+                id: 16,
+                question: "急诊预检分诊系统一般按照什么原则进行分诊？",
+                options: ["A. 两区三级分诊原则", "B. 三区四级分诊原则", "C. 四区五级分诊原则", "D. 五区六级分诊原则"],
+                answer: "B. 三区四级分诊原则",
+                explanation: "急诊预检分诊系统一般按照三区四级分诊原则对急诊患者进行分诊，确保危重患者得到及时救治。"
+            },
+            {
+                id: 17,
+                question: "公共卫生信息系统不包括以下哪个体系？",
+                options: ["A. 突发公共卫生事件应急指挥决策机制", "B. 疾病预防控制体系", "C. 医疗救治体系", "D. 医院财务管理体系"],
+                answer: "D. 医院财务管理体系",
+                explanation: "公共卫生信息系统包括突发公共卫生事件应急指挥决策机制、疾病预防控制体系、医疗救治体系、卫生执法监督体系，不包括医院财务管理体系。"
+            },
+            {
+                id: 18,
+                question: "疾病预防控制中心的英文缩写是？",
+                options: ["A. CDC", "B. WHO", "C. FDA", "D. NMPA"],
+                answer: "A. CDC",
+                explanation: "CDC（Centers for Disease Control and Prevention）是疾病预防控制中心的英文缩写。"
+            },
+            {
+                id: 19,
+                question: "云计算服务模式中，'平台即服务'的英文缩写是？",
+                options: ["A. IaaS", "B. PaaS", "C. SaaS", "D. DaaS"],
+                answer: "B. PaaS",
+                explanation: "云计算服务模式包括IaaS（基础设施即服务）、PaaS（平台即服务）、SaaS（软件即服务）。"
+            },
+            {
+                id: 20,
+                question: "大数据的四大特征不包括以下哪项？",
+                options: ["A. Volume（大量）", "B. Velocity（高速）", "C. Variety（多样）", "D. Virtual（虚拟）"],
+                answer: "D. Virtual（虚拟）",
+                explanation: "大数据的四大特征是Volume（大量）、Velocity（高速）、Variety（多样）、Value（价值），不包括Virtual（虚拟）。"
+            }
+        ];
+
+        // 填空题数据（带解析）
+        const fillBlankQuestions = [
+            {
+                id: 1,
+                question: "医院信息系统的英文缩写是______。",
+                answer: "HIS",
+                explanation: "医院信息系统（Hospital Information System）是医院信息化的核心系统。"
+            },
+            {
+                id: 2,
+                question: "电子病历系统的英文缩写是______。",
+                answer: "EMR",
+                explanation: "电子病历系统（Electronic Medical Record）是记录患者医疗信息的重要系统。"
+            },
+            {
+                id: 3,
+                question: "医学图像存储传输系统的英文缩写是______。",
+                answer: "PACS",
+                explanation: "PACS（Picture Archiving and Communication System）用于医学图像的存储和传输。"
+            },
+            {
+                id: 4,
+                question: "实验室信息管理系统的英文缩写是______。",
+                answer: "LIS",
+                explanation: "LIS（Laboratory Information System）用于管理实验室相关信息。"
+            },
+            {
+                id: 5,
+                question: "医嘱主要分为______和______两类。",
+                answer: "长期医嘱；临时医嘱",
+                explanation: "长期医嘱执行时间超过24小时，临时医嘱执行时间在24小时内或限定时间内。"
+            },
+            {
+                id: 6,
+                question: "急诊预检分诊系统一般按照______原则进行分诊。",
+                answer: "三区四级分诊",
+                explanation: "三区四级分诊原则用于急诊患者的快速分类，确保危重患者优先救治。"
+            },
+            {
+                id: 7,
+                question: "电子病历系统应用水平分级评价分为______至______共九个等级。",
+                answer: "0级；8级",
+                explanation: "电子病历系统应用水平从0级到8级，共九个等级，用于评估电子病历应用水平。"
+            },
+            {
+                id: 8,
+                question: "医院智慧服务分级评价分为______至______共6个等级。",
+                answer: "0级；5级",
+                explanation: "医院智慧服务分级从0级到5级，共6个等级，用于评估面向患者的智慧服务水平。"
+            },
+            {
+                id: 9,
+                question: "临床数据存储库的英文缩写是______。",
+                answer: "CDR",
+                explanation: "CDR（Clinical Data Repository）是临床数据中心，用于整合各种临床信息数据。"
+            },
+            {
+                id: 10,
+                question: "疾病预防控制中心的英文缩写是______。",
+                answer: "CDC",
+                explanation: "CDC（Centers for Disease Control and Prevention）是疾病预防控制中心的英文缩写。"
+            }
+        ];
+
+        // 简答题数据（带解析）
+        const shortAnswerQuestions = [
+            {
+                id: 1,
+                question: "简述医院信息系统的定义和主要任务。",
+                answer: "医院信息系统是指利用计算机软硬件技术、网络通讯技术等现代化手段的信息系统。主要任务是对医院及其所属各部门的人流、物流、财流进行综合管理，在医疗活动各阶段中对数据进行采集、存储、处理、提取、传输、汇总、加工生成各种信息，为医院的整体运行提供全面的、自动化的管理及各种服务。",
+                explanation: "医院信息系统是医院信息化的核心，通过信息技术手段实现医院各项业务的自动化管理，提高医院运行效率和服务质量。"
+            },
+            {
+                id: 2,
+                question: "简述HIS系统的五个功能组成部分。",
+                answer: "根据国家卫健委制定的HIS功能规范，将整个医院信息系统划分为五个部分：1. 临床诊疗部分；2. 药品管理部分；3. 经济管理部分；4. 综合管理与统计分析部分；5. 外部接口部分。",
+                explanation: "HIS系统按功能划分，各部分相互协作，共同构成完整的医院信息系统，实现医院的全面信息化管理。"
+            },
+            {
+                id: 3,
+                question: "简述电子病历(EMR)的定义和作用。",
+                answer: "电子病历（Electronic Medical Record,EMR）是由医疗机构以电子化方式创建、保存和使用的、重点针对门诊、住院患者（或保健对象）临床诊疗和指导干预信息的数据集成系统。作用：1. 是居民个人在医疗机构历次就诊过程中产生和被记录的完整、详细的临床信息资源；2. 是记录医疗诊治对象医疗服务活动记录的信息资源库。",
+                explanation: "电子病历是临床信息系统的核心组成部分，实现了患者医疗信息的电子化存储和管理，提高了医疗服务效率和质量。"
+            },
+            {
+                id: 4,
+                question: "简述临床信息系统的组成。",
+                answer: "临床信息系统(CIS)主要包括：1. 电子病历系统（EMR）；2. 医生站系统；3. 护理信息系统（NIS）；4. 护士工作站系统；5. 实验室信息系统（LIS）；6. 医学图像存储传输系统（PACS）；7. 放射信息系统（RIS）；8. 手术麻醉管理系统；9. 重症监护管理系统；10. 临床决策支持系统（CDSS）等。",
+                explanation: "临床信息系统是医院信息系统的重要组成部分，专注于临床诊疗活动，通过各子系统的协同工作，提升临床诊疗质量和效率。"
+            },
+            {
+                id: 5,
+                question: "简述医院信息标准的定义和作用。",
+                answer: "医院信息标准指在医疗事务处理过程中，信息采集、传输、交换和利用时所采用的统一的规则、概念、名词、术语、代码和技术。作用：1. 保证多个独立信息系统之间信息的兼容性和互操作性；2. 保证用于统计目的的数据分类的可比性；3. 减少重复研究和信息冗余；4. 使医院信息处于规范、统一的标准管理之中；5. 医院信息化工作得以顺利开展。",
+                explanation: "医院信息标准是实现医院信息系统互联互通的基础，通过统一的标准确保不同系统间的信息能够有效交换和利用。"
+            }
+        ];
+
+        // 分析题数据（带解析）
+        const analysisQuestions = [
+            {
+                id: 1,
+                question: "分析医院信息系统(HIS)与临床信息系统(CIS)的关系，以及它们在医院信息化建设中的作用。",
+                answer: "HIS与CIS的关系：1. HIS是医院信息系统的核心，主要负责医院管理，包括人流、物流、财流的综合管理；2. CIS是HIS的重要组成部分，专注于临床诊疗活动，包括EMR、LIS、PACS、NIS等系统；3. 两者相互依存，HIS为CIS提供管理支撑，CIS为HIS提供临床数据。作用：1. HIS提高医院管理效率，优化资源配置；2. CIS提升临床诊疗质量，保障医疗安全；3. 两者的结合实现医院全面信息化，提升医疗服务水平。",
+                explanation: "HIS与CIS是医院信息化建设中相辅相成的两个重要组成部分，通过两者的有机结合，可以实现医院管理与临床服务的全面信息化，提高整体医疗服务质量。"
+            },
+            {
+                id: 2,
+                question: "分析电子病历(EMR)、临床数据存储库(CDR)和医院信息系统(HIS)之间的关系，并说明它们在医院信息化中的重要性。",
+                answer: "三者关系：1. EMR是针对门诊、住院患者的临床诊疗信息数据集成系统；2. CDR是各种来源的电子病历数据的统一管理和服务，具有统一的数据模型；3. HIS是医院综合管理信息系统，为EMR和CDR提供基础支撑。重要性：1. EMR实现临床信息电子化，提高诊疗效率；2. CDR实现数据整合，支持全流程患者360视图；3. HIS实现医院全面管理，三者共同构成医院信息化核心。",
+                explanation: "EMR、CDR和HIS在医院信息化中各司其职又相互关联，共同构建了完整的医院信息化体系，为医院的高效运行和优质服务提供技术支撑。"
+            },
+            {
+                id: 3,
+                question: "结合实际医疗场景，分析信息系统故障对医院运营的影响，并提出相应的应对措施。",
+                answer: "影响分析：1. 医疗服务中断：无法查看患者信息、开立医嘱、执行治疗；2. 管理效率下降：无法进行收费、统计、报表等工作；3. 医疗安全风险：可能因信息不全导致误诊误治；4. 患者满意度下降：等待时间延长，服务体验变差。应对措施：1. 建立容灾备份机制；2. 备份数据库；3. 定期进行数据恢复验证；4. 开展应急演练；5. 制定详细应急预案；6. 建立备用系统或手工流程。",
+                explanation: "信息系统是现代医院运营的重要支撑，其稳定性直接关系到医院的正常运行和医疗服务质量，因此必须建立完善的故障应对机制，确保医院业务的连续性。"
+            }
+        ];
+
+        // 生成选择题
+        function generateMultipleChoiceQuestions() {
+            const container = document.getElementById('multiple-choice-questions');
+            container.innerHTML = '';
+
+            multipleChoiceQuestions.forEach(q => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question-item';
+                questionItem.innerHTML = `
+                    <div class="question-content">
+                        <span class="question-number">${q.id}.</span>${q.question}
+                    </div>
+                    <div class="options">
+                        ${q.options.map(option => `<div class="option">${option}</div>`).join('')}
+                    </div>
+                    <button class="answer-btn" onclick="showAnswer(${q.id}, 'mc')">显示答案和解析</button>
+                    <div class="answer" id="answer-mc-${q.id}">答案：${q.answer}</div>
+                    <div class="explanation" id="explanation-mc-${q.id}">解析：${q.explanation}</div>
+                `;
+                container.appendChild(questionItem);
+            });
+        }
+
+        // 生成填空题
+        function generateFillBlankQuestions() {
+            const container = document.getElementById('fill-blank-questions');
+            container.innerHTML = '';
+
+            fillBlankQuestions.forEach(q => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question-item';
+                questionItem.innerHTML = `
+                    <div class="question-content">
+                        <span class="question-number">${q.id}.</span>${q.question}
+                    </div>
+                    <button class="answer-btn" onclick="showAnswer(${q.id}, 'fb')">显示答案和解析</button>
+                    <div class="answer" id="answer-fb-${q.id}">答案：${q.answer}</div>
+                    <div class="explanation" id="explanation-fb-${q.id}">解析：${q.explanation}</div>
+                `;
+                container.appendChild(questionItem);
+            });
+        }
+
+        // 生成简答题
+        function generateShortAnswerQuestions() {
+            const container = document.getElementById('short-answer-questions');
+            container.innerHTML = '';
+
+            shortAnswerQuestions.forEach(q => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question-item';
+                questionItem.innerHTML = `
+                    <div class="question-content">
+                        <span class="question-number">${q.id}.</span>${q.question}
+                    </div>
+                    <button class="answer-btn" onclick="showAnswer(${q.id}, 'sa')">显示答案和解析</button>
+                    <div class="answer" id="answer-sa-${q.id}">${q.answer}</div>
+                    <div class="explanation" id="explanation-sa-${q.id}">解析：${q.explanation}</div>
+                `;
+                container.appendChild(questionItem);
+            });
+        }
+
+        // 生成分析题
+        function generateAnalysisQuestions() {
+            const container = document.getElementById('analysis-questions');
+            container.innerHTML = '';
+
+            analysisQuestions.forEach(q => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question-item';
+                questionItem.innerHTML = `
+                    <div class="question-content">
+                        <span class="question-number">${q.id}.</span>${q.question}
+                    </div>
+                    <button class="answer-btn" onclick="showAnswer(${q.id}, 'an')">显示答案和解析</button>
+                    <div class="answer" id="answer-an-${q.id}">${q.answer}</div>
+                    <div class="explanation" id="explanation-an-${q.id}">解析：${q.explanation}</div>
+                `;
+                container.appendChild(questionItem);
+            });
+        }
+
+        // 显示答案和解析函数
+        function showAnswer(id, type) {
+            const answerElement = document.getElementById(`answer-${type}-${id}`);
+            const explanationElement = document.getElementById(`explanation-${type}-${id}`);
+            
+            if (answerElement.style.display === 'block' && explanationElement.style.display === 'block') {
+                answerElement.style.display = 'none';
+                explanationElement.style.display = 'none';
+            } else {
+                answerElement.style.display = 'block';
+                explanationElement.style.display = 'block';
+            }
+        }
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            generateMultipleChoiceQuestions();
+            generateFillBlankQuestions();
+            generateShortAnswerQuestions();
+            generateAnalysisQuestions();
+        });
+    </script>
+</body>
+</html>
