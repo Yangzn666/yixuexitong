@@ -923,11 +923,15 @@
                 }, index * 100);
             });
             
-            // 初始化滚轮控制
-            initWheelControl();
-            
-            // 初始化触摸控制
-            initTouchControl();
+            // 检测是否为移动设备，如果是则只启用触摸控制，否则启用滚轮控制
+            if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                // 移动设备只启用触摸控制
+                initTouchControl();
+            } else {
+                // 桌面设备启用滚轮控制
+                initWheelControl();
+                initTouchControl();
+            }
         });
         
         // 触摸滑动控制卡片切换功能
